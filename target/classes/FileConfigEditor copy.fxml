@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.control.Tooltip?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+
+<SplitPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" orientation="VERTICAL" prefHeight="800.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dev.shingi.controllers.FileConfigEditorController">
+   <items>
+      <VBox alignment="CENTER" prefHeight="800.0" prefWidth="1000.0" spacing="20.0">
+         <children>
+            <VBox alignment="CENTER" spacing="20.0">
+               <children>
+                  <Label alignment="CENTER" opacity="0.8" prefHeight="53.0" prefWidth="444.0" text="Bestand Configuratie" textAlignment="CENTER">
+                     <font>
+                        <Font size="36.0" />
+                     </font>
+                  </Label>
+                  <Label text="Kies een optie:">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <HBox alignment="CENTER" spacing="40.0">
+                     <children>
+                        <VBox alignment="TOP_CENTER" prefWidth="210.0" spacing="10.0" style="-fx-border-color: gray;">
+                           <children>
+                              <Label text="Maak een nieuwe configuratie aan:" />
+                              <Button fx:id="newConfigButton" mnemonicParsing="false" onAction="#handleNewConfigButton" text="Nieuwe configuratie" />
+                              <Button fx:id="saveConfigButton" mnemonicParsing="false" onAction="#handleSaveFileConfigButton" text="Opslaan" />
+                           </children>
+                           <padding>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </padding>
+                        </VBox>
+                        <VBox alignment="TOP_CENTER" prefWidth="210.0" spacing="10.0" style="-fx-border-color: gray;">
+                           <children>
+                              <Label text="Selecteer een configuratie:" />
+                              <ComboBox fx:id="selectConfigComboBox" onAction="#handleSelectFileConfigComboBox" prefWidth="150.0" />
+                           </children>
+                           <padding>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </padding>
+                        </VBox>
+                     </children>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                  </HBox>
+               </children>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+               <padding>
+                  <Insets bottom="10.0" />
+               </padding>
+            </VBox>
+            <Line endX="900.0" startX="-100.0" />
+            <HBox fx:id="contentHbox" alignment="CENTER" spacing="40.0">
+               <children>
+                  <VBox spacing="40.0">
+                     <children>
+                        <TitledPane animated="false" collapsible="false" prefWidth="350.0" text="Naam en Datum Format">
+                           <content>
+                              <VBox alignment="CENTER_LEFT">
+                                 <children>
+                                    <GridPane hgap="15.0">
+                                      <columnConstraints>
+                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                      </columnConstraints>
+                                      <rowConstraints>
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                      </rowConstraints>
+                                       <children>
+                                          <ComboBox fx:id="dateFormatComboBox" editable="true" maxWidth="150.0" onAction="#updateDatePreview" promptText="dd/MM/yyyy" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                          <Label fx:id="dateFormatPreview" alignment="TOP_LEFT" text="Datum format: 31/12/2022" GridPane.columnIndex="1">
+                                             <tooltip>
+                                                <Tooltip text="Preview van de geselecteerde datumformattering." />
+                                             </tooltip>
+                                             <font>
+                                                <Font name="System Italic" size="12.0" />
+                                             </font>
+                                             <GridPane.margin>
+                                                <Insets left="2.0" />
+                                             </GridPane.margin>
+                                          </Label>
+                                          <TextField fx:id="sourceNameField" maxWidth="150.0" GridPane.rowIndex="1" />
+                                          <Label prefHeight="23.0" text="Bronnaam:" />
+                                       </children>
+                                    </GridPane>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </padding>
+                              </VBox>
+                           </content>
+                        </TitledPane>
+                        <TitledPane animated="false" collapsible="false" prefHeight="170.0" prefWidth="300.0" text="Aanduiding Debet en Credit">
+                           <content>
+                              <VBox>
+                                 <children>
+                                    <GridPane>
+                                       <columnConstraints>
+                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                       </columnConstraints>
+                                       <rowConstraints>
+                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                       </rowConstraints>
+                                       <children>
+                                          <RadioButton fx:id="inAmountRadioButton" mnemonicParsing="false" onAction="#handleInAmountRadioButton" text="In Bedrag" />
+                                          <RadioButton fx:id="inSeparateColumnRadioButton" mnemonicParsing="false" onAction="#handleInSeparateColumnRadioButton" text="In aparte kolom:" GridPane.rowIndex="1" />
+                                          <RadioButton fx:id="inSeparateColumnsRadioButton" mnemonicParsing="false" onAction="#handleInSeparateColumnsRadioButton" text="In aparte kolommen:" GridPane.rowIndex="2" />
+                                          <TextField fx:id="debetCreditHeaderNameField" disable="true" maxWidth="150.0" promptText="Headernaam..." GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                          <TextField fx:id="creditFormatField" disable="true" maxWidth="150.0" promptText="Creditaanduiding..." GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                          <TextField fx:id="debetFormatField" disable="true" maxWidth="150.0" promptText="Debetaanduiding..." GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                       </children>
+                                    </GridPane>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </padding>
+                              </VBox>
+                           </content>
+                        </TitledPane>
+                     </children>
+                  </VBox>
+                  <VBox prefWidth="350.0" spacing="40.0">
+                     <children>
+                        <TitledPane animated="false" collapsible="false" prefWidth="300.0" text="Inlees Informatie">
+                           <content>
+                              <VBox>
+                                 <children>
+                                    <GridPane>
+                                       <columnConstraints>
+                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                       </columnConstraints>
+                                       <rowConstraints>
+                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                       </rowConstraints>
+                                       <children>
+                                          <Label prefHeight="23.0" text="Rij met headers:" />
+                                          <Label prefHeight="23.0" text="Rij van eerste transactie:" GridPane.rowIndex="1" />
+                                          <TextField fx:id="headerRowField" maxWidth="150.0" GridPane.columnIndex="1" />
+                                          <TextField fx:id="firstTransactionRowField" maxWidth="150.0" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                       </children>
+                                    </GridPane>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </padding>
+                              </VBox>
+                           </content>
+                        </TitledPane>
+                        <TitledPane fx:id="headerInformationTitledPane" animated="false" collapsible="false" prefHeight="170.0" text="Headernamen">
+                           <content>
+                              <VBox>
+                                 <children>
+                                    <GridPane>
+                                       <columnConstraints>
+                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                       </columnConstraints>
+                                       <rowConstraints>
+                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                       </rowConstraints>
+                                       <children>
+                                          <Label prefHeight="23.0" text="Bedrag:" GridPane.rowIndex="1" />
+                                          <Label prefHeight="23.0" text="Omschrijving:" GridPane.rowIndex="2" />
+                                          <Label prefHeight="23.0" text="Datum:" />
+                                          <TextField fx:id="dateHeaderNameTextField" maxWidth="150.0" GridPane.columnIndex="1" />
+                                          <TextField fx:id="amountHeaderNameTextField" maxWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                          <TextField fx:id="descriptionHeaderNameTextField" maxWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                       </children>
+                                    </GridPane>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </padding>
+                              </VBox>
+                           </content>
+                        </TitledPane>
+                     </children>
+                  </VBox>
+               </children>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+               <padding>
+                  <Insets bottom="20.0" />
+               </padding>
+            </HBox>
+         </children>
+         <padding>
+            <Insets bottom="50.0" />
+         </padding>
+      </VBox>
+   </items>
+</SplitPane>
