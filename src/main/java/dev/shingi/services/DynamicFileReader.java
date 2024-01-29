@@ -1,7 +1,9 @@
 package dev.shingi.services;
 
+import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.poi.ss.usermodel.Cell;
@@ -9,9 +11,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 
-import dev.shingi.models.FileConfig;
-import dev.shingi.models.Transaction;
-import dev.shingi.models.TransactionFile;
+import dev.shingi.models.*;
 import dev.shingi.utils.ExcelSheetUtils;
 
 public class DynamicFileReader {
@@ -46,45 +46,71 @@ public class DynamicFileReader {
     // Find the index of headers based on header names
     private Map<String, Integer> findHeaderIndices(Row headerRow) {
         Map<String, Integer> headerIndexMap = new HashMap<String, Integer>();
+        List<String> allHeaderNames = config.getAllHeaderNames();
+
         for (Cell cell : headerRow) {
             String cellValue = cell.toString().trim();
             int columnIndex = cell.getColumnIndex();
-            if (cellValue.equals(config.getDateHeaderName()) || 
-                cellValue.equals(config.getAmountFormat().getAmountHeaderName()) || 
-                cellValue.equals(config.getDescriptionHeaderName()) ||
-                (config.getAmountFormat().isInSeparateColumn() && (
-                    cellValue.equals(config.getDebetCreditHeaderName())))) {
+
+            if (allHeaderNames.contains(cellValue)) {
                 headerIndexMap.put(cellValue, columnIndex);
             }
         }
         return headerIndexMap;
     }
-    
 
     // Create a Transaction object based on a Row and header indices
     private Transaction createTransactionFromRow(Row row, Map<String, Integer> headerIndexMap) {
         // Create the Transaction object
         try {
-            Transaction transaction = new Transaction(
-                row.getCell(headerIndexMap.get(config.getDateHeaderName())).getDateCellValue().toInstant().atZone(ZoneId.systemDefault()).toLocalDate(), // Assuming cell type is Date
-                row.getCell(headerIndexMap.get(config.getAmountFormat().getAmountHeaderName())).getNumericCellValue(), // Assuming cell type is Numeric
-                row.getCell(headerIndexMap.get(config.getDescriptionHeaderName())).getStringCellValue().trim(), // Assuming cell type is String
-                ExcelSheetUtils.generateRowMap(row),
-                row.getRowNum()
-            );
+            // Get the date
+            LocalDate date = row.getCell(headerIndexMap.get(config.getDateHeaderName())).getDateCellValue().toInstant().atZone(ZoneId.systemDefault()).toLocalDate(); // Assuming cell type is Date
             
-            // Additional logic to handle credit and debit separately, if applicable
-            if (config.getAmountFormat().isInSeparateColumn()) {
-                Cell debetOrCreditCell = row.getCell(headerIndexMap.get(config.getDebetCreditHeaderName()));
-                if (debetOrCreditCell.getStringCellValue().equals(config.getAmountFormat().getDebetFormat())) {
-                    transaction.setAmount(transaction.getAmount() * -1);
-                }
-            }
+            // Get the description
+            String description = row.getCell(headerIndexMap.get(config.getDescriptionHeaderName())).getStringCellValue().trim(); // Assuming cell type is String
+            
+            // Get the row map
+            Map<Object, String> entireRow = ExcelSheetUtils.generateRowMap(row);
 
-        return transaction;
+            // Get the row number
+            int rowNum = row.getRowNum();
+
+            // Get the amount
+            double amount = readAmount(headerIndexMap, row);
+            
+            // Create the transaction and return it
+            Transaction transaction = new Transaction(date, amount, description, entireRow, rowNum);
+            return transaction;
+
         } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
+    }
+
+    private double readAmount(Map<String, Integer> headerIndexMap, Row row) {
+        double amount = 0.0;
+        switch(this.config.getAmountFormatType()) {
+            case 1: 
+                AmountFormat1 amountFormat1 = (AmountFormat1) config.getAmountFormat();
+                amount = row.getCell(headerIndexMap.get(amountFormat1.getAmountHeaderName())).getNumericCellValue();
+                break;
+            case 2:
+                AmountFormat2 amountFormat2 = (AmountFormat2) config.getAmountFormat();
+                amount = row.getCell(headerIndexMap.get(amountFormat2.getAmountHeaderName())).getNumericCellValue();
+
+                String amountType = row.getCell(headerIndexMap.get(amountFormat2.getAmountFormatHeaderName())).getStringCellValue();
+
+                if (amountType.equals(amountFormat2.getDebetFormat())) {
+                    amount *= -1;
+                }
+                break;
+            case 3:
+                AmountFormat3 amountFormat3 = (AmountFormat3) config.getAmountFormat();
+                double debetAmount = (double) row.getCell(headerIndexMap.get(amountFormat3.getDebetHeaderName())).getNumericCellValue();
+                double creditAmount = (double) row.getCell(headerIndexMap.get(amountFormat3.getCreditHeaderName())).getNumericCellValue();
+                amount = creditAmount - debetAmount;
+        }
+        return amount;
     }
 }
