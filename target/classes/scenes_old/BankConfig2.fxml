@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.control.Tooltip?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+
+<SplitPane dividerPositions="0.7631578947368421" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" orientation="VERTICAL" prefHeight="800.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dev.shingi.rengercompare.BankConfigController">
+   <items>
+      <VBox alignment="TOP_CENTER" prefHeight="800.0" prefWidth="1098.0" spacing="20.0">
+         <children>
+            <Label alignment="CENTER" opacity="0.8" prefHeight="53.0" prefWidth="444.0" text="Bank Configuratie" textAlignment="CENTER">
+               <font>
+                  <Font size="36.0" />
+               </font>
+            </Label>
+            <VBox alignment="TOP_CENTER" spacing="20.0">
+               <children>
+                  <Label text="Kies een optie:">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <HBox alignment="TOP_CENTER" spacing="50.0">
+                     <children>
+                        <VBox alignment="TOP_CENTER" spacing="10.0" style="-fx-border-color: gray;">
+                           <children>
+                              <Label text="Maak een nieuwe bank aan:" />
+                              <Button fx:id="newBankButton" mnemonicParsing="false" text="Nieuwe bank" />
+                              <Button fx:id="saveBankButton" mnemonicParsing="false" text="Opslaan" />
+                           </children>
+                           <padding>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </padding>
+                        </VBox>
+                        <VBox alignment="TOP_CENTER" spacing="10.0" style="-fx-border-color: gray;">
+                           <children>
+                              <Label text="Selecteer een bank:" />
+                              <ComboBox fx:id="selectBankComboBox" prefWidth="150.0" />
+                           </children>
+                           <padding>
+                              <Insets left="10.0" right="10.0" top="10.0" />
+                           </padding>
+                        </VBox>
+                        <VBox alignment="TOP_CENTER" spacing="10.0" style="-fx-border-color: gray;">
+                           <children>
+                              <Label text="Toon een bestandspreview:" textAlignment="CENTER" />
+                              <Label fx:id="selectOrDropPreviewFileLabel" alignment="CENTER" onMouseClicked="#handleSelectFile" style="-fx-background-radius: 30%; -fx-border-color: black; -fx-border-width: 2px; -fx-border-style: dashed;" text="Selecteer of sleep bestand" textAlignment="CENTER" wrapText="true">
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
+                                 <padding>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </padding>
+                              </Label>
+                           </children>
+                           <padding>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </padding>
+                        </VBox>
+                     </children>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                  </HBox>
+               </children>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+               <padding>
+                  <Insets bottom="10.0" />
+               </padding>
+            </VBox>
+            <Line endX="900.0" startX="-100.0" />
+            <TabPane tabClosingPolicy="UNAVAILABLE">
+              <tabs>
+                  <Tab text="Untitled Tab">
+                     <content>
+                        <TitledPane animated="false" collapsible="false" text="Basis informatie">
+                           <content>
+                              <VBox>
+                                 <children>
+                                    <Label text="Naam bank:" />
+                                    <TextField fx:id="bankNameField" />
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="5.0" />
+                                 </padding>
+                              </VBox>
+                           </content>
+                        </TitledPane>
+                     </content>
+                  </Tab>
+                  <Tab text="Untitled Tab">
+                     <content>
+                        <TitledPane animated="false" collapsible="false" text="Formatteer regels">
+                           <content>
+                              <HBox>
+                                 <children>
+                                    <VBox spacing="5.0">
+                                       <children>
+                                          <Label text="Datum" />
+                                          <Line endX="-43.5" startX="-100.0" />
+                                          <HBox spacing="20.0">
+                                             <children>
+                                                <VBox prefHeight="200.0" prefWidth="100.0" spacing="2.0">
+                                                   <children>
+                                                      <Label text="Datum format">
+                                                         <tooltip>
+                                                            <Tooltip text="Datumnotaties kunnen variëren. Kijk naar je bankafschrift en selecteer de stijl die overeenkomt." />
+                                                         </tooltip>
+                                                      </Label>
+                              						<RadioButton fx:id="dateFormat1" text="dd/MM/yyyy">
+                                                         <toggleGroup>
+                                                            <ToggleGroup fx:id="dateFormatGroup" />
+                                                         </toggleGroup>
+                                                      </RadioButton>
+                              						<RadioButton fx:id="dateFormat2" text="MM-dd-yyyy" toggleGroup="$dateFormatGroup" />
+                              						<RadioButton fx:id="dateFormat3" text="yyyyMMdd" toggleGroup="$dateFormatGroup" />
+                              						<RadioButton fx:id="dateFormatOther" text="Other" toggleGroup="$dateFormatGroup" />
+                              						<TextField fx:id="dateFormatOtherField" />
+                                                   </children>
+                                                </VBox>
+                                                <VBox spacing="2.0">
+                                                   <children>
+                                                      <Label text="Preview" />
+                                                      <Label fx:id="dateFormatPreview" text="31/12/2022">
+                                                         <tooltip>
+                                                            <Tooltip text="Preview van de geselecteerde datumformattering." />
+                                                         </tooltip>
+                                                      </Label>
+                                                   </children>
+                                                </VBox>
+                                             </children>
+                                          </HBox>
+                                          <Line endX="224.2928924560547" startX="-100.0" />
+                                          <HBox prefHeight="100.0" prefWidth="200.0">
+                                             <children>
+                                                <Label text="Debet en credit" />
+                                                <Region HBox.hgrow="ALWAYS" />
+                                                <RadioButton mnemonicParsing="false" text="Aangegeven in aparte kolom" />
+                                             </children>
+                                          </HBox>
+                                          <Line endX="-43.5" startX="-100.0" />
+                                          <HBox spacing="20.0">
+                                             <children>
+                                                <VBox spacing="2.0">
+                                                   <children>
+                                                      <Label text="Credit is gerepresenteerd als:" />
+                                                      <RadioButton fx:id="creditFormat1" mnemonicParsing="false" text="Credit">
+                                                         <toggleGroup>
+                                                            <ToggleGroup fx:id="creditFormatGroup" />
+                                                         </toggleGroup>
+                                                      </RadioButton>
+                                                      <RadioButton fx:id="creditFormat2" mnemonicParsing="false" text="C" toggleGroup="$creditFormatGroup" />
+                                                      <RadioButton fx:id="creditFormatOther" mnemonicParsing="false" text="Anders:" toggleGroup="$creditFormatGroup" />
+                                                      <TextField fx:id="creditFormatOtherField" />
+                                                   </children>
+                                                </VBox>
+                                                <VBox spacing="2.0">
+                                                   <children>
+                                                      <Label text="Debit is gerepresenteerd als:" />
+                                                      <RadioButton fx:id="debetFormat1" mnemonicParsing="false" text="Debet">
+                                                         <toggleGroup>
+                                                            <ToggleGroup fx:id="debetFormatGroup" />
+                                                         </toggleGroup>
+                                                      </RadioButton>
+                                                      <RadioButton fx:id="debetFormat2" mnemonicParsing="false" text="D" toggleGroup="$debetFormatGroup" />
+                                                      <RadioButton fx:id="debetFormatOther" mnemonicParsing="false" text="Anders:" toggleGroup="$debetFormatGroup" />
+                                                      <TextField fx:id="debetFormatOtherField" />
+                                                   </children>
+                                                </VBox>
+                                             </children>
+                                          </HBox>
+                                       </children>
+                                    </VBox>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                           </content>
+                        </TitledPane>
+                     </content>
+                  </Tab>
+                  <Tab text="Untitled Tab">
+                     <content>
+                        <VBox>
+                           <children>
+                              <TitledPane animated="false" collapsible="false" text="Header informatie">
+                                 <content>
+                                    <VBox>
+                                       <children>
+                                          <GridPane>
+                                            <columnConstraints>
+                                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                              <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                            </columnConstraints>
+                                            <rowConstraints>
+                                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                            </rowConstraints>
+                                             <children>
+                                                <Label text="Data" />
+                                                <Label text="Headernaam" GridPane.columnIndex="1" />
+                                                <Label text="Cellreferentie" GridPane.columnIndex="2" />
+                                             </children>
+                                          </GridPane>
+                                          <Line endX="200.0" startX="-100.0" />
+                                          <GridPane>
+                                            <columnConstraints>
+                                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                            </columnConstraints>
+                                            <rowConstraints>
+                                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                            </rowConstraints>
+                                             <children>
+                                                <Label prefHeight="23.0" text="Bedrag" />
+                                                <Label prefHeight="23.0" text="Omschrijving" GridPane.rowIndex="1" />
+                                                <Label prefHeight="23.0" text="Datum" GridPane.rowIndex="2" />
+                                                <TextField fx:id="amountField" GridPane.columnIndex="1" />
+                                                <TextField fx:id="descriptionField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                                <TextField fx:id="dateField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                                <Label fx:id="cellRefLabel1" opacity="0.7" text="a1" textFill="GREY" GridPane.columnIndex="2">
+                                                   <font>
+                                                      <Font name="System Italic" size="12.0" />
+                                                   </font>
+                                                </Label>
+                                                <Label fx:id="cellRefLabel2" opacity="0.7" text="a2" textFill="GREY" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                                                   <font>
+                                                      <Font name="System Italic" size="12.0" />
+                                                   </font>
+                                                </Label>
+                                                <Label fx:id="cellRefLabel3" opacity="0.7" text="a3" textFill="GREY" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                                                   <font>
+                                                      <Font name="System Italic" size="12.0" />
+                                                   </font>
+                                                </Label>
+                                                <Label prefHeight="23.0" text="Debet of credit" GridPane.rowIndex="3" />
+                                                <TextField fx:id="debetOrCreditField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                                <Label fx:id="cellRefLabel4" opacity="0.7" text="a4" textFill="GREY" GridPane.columnIndex="2" GridPane.rowIndex="3">
+                                                   <font>
+                                                      <Font name="System Italic" size="12.0" />
+                                                   </font>
+                                                </Label>
+                                             </children>
+                                          </GridPane>
+                                       </children>
+                                       <padding>
+                                          <Insets bottom="10.0" left="10.0" right="10.0" />
+                                       </padding>
+                                    </VBox>
+                                 </content>
+                              </TitledPane>
+                              <Region VBox.vgrow="ALWAYS" />
+                              <TitledPane animated="false" collapsible="false" text="Inlees informatie">
+                                 <content>
+                                    <VBox>
+                                       <children>
+                                          <GridPane>
+                                             <columnConstraints>
+                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                             </columnConstraints>
+                                             <rowConstraints>
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                             </rowConstraints>
+                                             <children>
+                                                <Label prefHeight="23.0" text="Rij met headers" />
+                                                <Label prefHeight="23.0" text="Rij van eerste transactie" GridPane.rowIndex="1" />
+                                                <TextField fx:id="headerRowField" GridPane.columnIndex="1" />
+                                                <TextField fx:id="firstTransactionField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                             </children>
+                                          </GridPane>
+                                       </children>
+                                       <padding>
+                                          <Insets bottom="10.0" left="10.0" right="10.0" />
+                                       </padding>
+                                    </VBox>
+                                 </content>
+                              </TitledPane>
+                           </children>
+                        </VBox>
+                     </content>
+                  </Tab>
+              </tabs>
+            </TabPane>
+         </children>
+         <padding>
+            <Insets top="10.0" />
+         </padding>
+      </VBox>
+      <TableView fx:id="filePreviewTableView" prefHeight="200.0" prefWidth="1098.0">
+        <columns>
+          <TableColumn prefWidth="75.0" text="C1" />
+          <TableColumn prefWidth="75.0" text="C2" />
+        </columns>
+      </TableView>
+   </items>
+</SplitPane>
