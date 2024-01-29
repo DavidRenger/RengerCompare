@@ -10,35 +10,35 @@ import org.apache.poi.ss.usermodel.Row;
 import dev.shingi.utils.ExcelSheetUtils;
 
 public class FileConfig {
-    // Name and date format
+    // Name
     private String sourceName;
+
+    // Date format
     private SimpleDateFormat dateFormat;
 
-    // Amount format and potential debetCredit header name
-    private AmountInfo amountInfo;
-    private String debetCreditHeaderName;
-    private String debetHeaderName;
-    private String creditHeaderName;
-
-    // Basic read information
-    private int headerRowNumber;
-    private int firstTransactionRowNumber;
-    
     // Basic header names
     private String dateHeaderName;
     private String descriptionHeaderName;
 
-    // List of all headers and map connecting header names and column indices
-    private List<String> allHeaderNames;
-    // private Map<String, Integer> allHeaderIndices;
+    // Basic read information
+    private int headerRowNumber;
+    private int firstTransactionRowNumber;
 
-    public FileConfig(String sourceName, String dateFormat, AmountInfo amountInfo,  int headerRowNumber, int firstTransactionRowNumber, String dateHeaderName, String descriptionHeaderName, String debetCreditHeaderName) {
+    // Amount format settings
+    private int amountFormatType; // this can only take the value 1, 2, or 3, indicating which type of amount formatting this fileConfig uses
+    private AmountFormat1 amountFormat1;
+    private AmountFormat2 amountFormat2;
+    private AmountFormat3 amountFormat3;
+
+    // List of all header names
+    private List<String> allHeaderNames;
+
+    public FileConfig(String sourceName, String dateFormat, int amountFormatType, int headerRowNumber, int firstTransactionRowNumber, String dateHeaderName, String descriptionHeaderName) {
         this.sourceName = sourceName;
 
         this.dateFormat = new SimpleDateFormat(dateFormat);
 
-        this.amountInfo = amountInfo;
-        this.debetCreditHeaderName = debetCreditHeaderName;
+        this.amountFormatType = amountFormatType;
 
         this.dateHeaderName = dateHeaderName;
         this.descriptionHeaderName = descriptionHeaderName;
@@ -46,7 +46,6 @@ public class FileConfig {
         this.headerRowNumber = headerRowNumber;
         this.firstTransactionRowNumber = firstTransactionRowNumber;
 
-        // this.allHeaderIndices = allHeaderIndices;
         this.allHeaderNames = addAllHeaderNames();
     }
 
@@ -59,16 +58,19 @@ public class FileConfig {
         List<String> headerNames = new ArrayList<String>();
 
         // Add mandatory headers
-        if (dateHeaderName != null) headerNames.add(dateHeaderName);
+        if (this.dateHeaderName != null) headerNames.add(dateHeaderName);
         // TO DO: if (amountHeaderName != null) headerNames.add(amountHeaderName);
-        if (descriptionHeaderName != null) headerNames.add(descriptionHeaderName);
+        if (this.descriptionHeaderName != null) headerNames.add(this.descriptionHeaderName);
 
         // Add optional headers for credit and debit if applicable
-        if (amountInfo.isInSeparateColumn()) {
-            if (debetCreditHeaderName != null) headerNames.add(debetCreditHeaderName);
-        } else if (amountInfo.isInSeparateColumns()) {
-            if (debetHeaderName != null) headerNames.add(debetHeaderName);
-            if (creditHeaderName != null) headerNames.add(creditHeaderName);
+        if (this.amountFormatType == 1) {
+            headerNames.add(this.amountFormat1.getAmountHeaderName());
+        } else if (this.amountFormatType == 2) {
+            headerNames.add(this.amountFormat2.getAmountHeaderName());
+            headerNames.add(this.amountFormat2.getAmountFormatHeaderName());
+        } else if (this.amountFormatType == 3) {
+            headerNames.add(this.amountFormat3.getDebetHeaderName());
+            headerNames.add(this.amountFormat3.getCreditHeaderName());
         }
 
         return headerNames;
@@ -81,22 +83,6 @@ public class FileConfig {
     @Override
     public String toString() {
         return sourceName;
-    }
-
-    public String getDebetHeaderName() {
-        return debetHeaderName;
-    }
-
-    public void setDebetHeaderName(String debetHeaderName) {
-        this.debetHeaderName = debetHeaderName;
-    }
-
-    public String getCreditHeaderName() {
-        return creditHeaderName;
-    }
-
-    public void setCreditHeaderName(String creditHeaderName) {
-        this.creditHeaderName = creditHeaderName;
     }
 
     // Getters and Setters
@@ -132,20 +118,20 @@ public class FileConfig {
         this.dateFormat = dateFormat;
     }
 
-    public AmountInfo getAmountFormat() {
-        return amountInfo;
+    public int getAmountFormatType() {
+        return this.amountFormatType;
     }
 
-    public void setAmountFormat(AmountInfo amountInfo) {
-        this.amountInfo = amountInfo;
-    }
-
-    public String getDebetCreditHeaderName() {
-        return debetCreditHeaderName;
-    }
-
-    public void setDebetCreditHeaderName(String debetCreditHeaderName) {
-        this.debetCreditHeaderName = debetCreditHeaderName;
+    public AmountFormat getAmountFormat() {
+        if (this.amountFormatType == 1) {
+            return this.amountFormat1;
+        } else if (this.amountFormatType == 2) {
+            return this.amountFormat2;
+        } else if (this.amountFormatType == 3) {
+            return this.amountFormat3;
+        } else {
+            return null;
+        }
     }
 
     public int getHeaderRowNumber() {
@@ -171,12 +157,4 @@ public class FileConfig {
     public void setAllHeaderNames(List<String> allHeaderNames) {
         this.allHeaderNames = allHeaderNames;
     }
-
-    // public Map<String, Integer> getAllHeaderIndices() {
-    //     return allHeaderIndices;
-    // }
-
-    // public void setAllHeaderIndices(Map<String, Integer> allHeaderIndices) {
-    //     this.allHeaderIndices = allHeaderIndices;
-    // }
 }
