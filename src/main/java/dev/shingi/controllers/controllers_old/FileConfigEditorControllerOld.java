@@ -1,4 +1,4 @@
-package dev.shingi.controllers;
+package dev.shingi.controllers.controllers_old;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -20,7 +20,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.HBox;
 
-public class FileConfigEditorController {
+public class FileConfigEditorControllerOld {
     // Configuration option setup
 	@FXML private HBox contentHbox;
 	@FXML private Button newConfigButton, saveFileConfigButton;

@@ -50,6 +50,11 @@ public class FileConfig {
         this.allHeaderNames = addAllHeaderNames();
     }
 
+    // Used in EditFileConfigController in the handleAddFileConfigButton method to initialize an new, empty file configuration.
+    public FileConfig(String sourceName) {
+        this.sourceName = sourceName;
+    }
+
     private List<String> addAllHeaderNames() {
         List<String> headerNames = new ArrayList<String>();
 
